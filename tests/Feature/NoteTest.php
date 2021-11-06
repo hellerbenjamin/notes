@@ -20,9 +20,8 @@ class NoteTest extends TestCase
     public function test_get_notes()
     {
         Auth::setUser($this->makeUser());
-        Note::factory()->make();
 
-        $response = $this->getJson(self::ENDPOINT);
+        $response = $this->get(self::ENDPOINT);
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -33,9 +32,9 @@ class NoteTest extends TestCase
     public function test_get_note_by_id()
     {
         Auth::setUser($this->makeUser());
-        Note::factory()->make();
+        $note = Note::first();
 
-        $response = $this->getJson(self::ENDPOINT . '/1');
+        $response = $this->get(self::ENDPOINT.'/'.$note->id);
         $response->assertStatus(200);
 
         $response->assertJsonStructure(self::JSON_STRUCTURE);
@@ -59,9 +58,19 @@ class NoteTest extends TestCase
         $note = Note::factory()->make();
 
         $newNote  = Note::factory()->make();
-        $response = $this->putJSON(self::ENDPOINT.'/1', $newNote->getAttributes());
+        $response = $this->putJSON(self::ENDPOINT.'/'.$note->id, $newNote->getAttributes());
 
         $response->assertStatus(200);
         $this->assertDatabaseHas($note->getTable(), $newNote->getAttributes());
+    }
+
+    public function test_delete_note()
+    {
+        Auth::setUser($this->makeUser());
+        $note = Note::first();
+
+        $response = $this->delete(self::ENDPOINT.'/'.$note->id);
+
+        $response->assertStatus(200);
     }
 }
