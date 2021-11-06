@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Notes;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NoteRequest;
 use App\Services\NoteService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -45,7 +46,7 @@ class NotesController extends Controller
      *
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(NoteRequest $request): JsonResponse
     {
         $this->noteService->createNote(array_merge(
                 $request->all(),
@@ -62,7 +63,7 @@ class NotesController extends Controller
      *
      * @return JsonResponse
      */
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, NoteRequest $request): JsonResponse
     {
         $this->noteService->updateNote($id, $request->all());
 
