@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Notes\NotesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('notes', \App\Http\Controllers\Notes\NotesController::class);
+    Route::get('notes', [NotesController::class, 'index']);
+    Route::get('notes/{id}', [NotesController::class, 'show'])->middleware('note.owner');
+    Route::post('notes', [NotesController::class, 'store']);
+    Route::put('notes/{id}', [NotesController::class, 'update'])->middleware('note.owner');;
+    Route::delete('notes/{id}', [NotesController::class, 'destroy'])->middleware('note.owner');;
 });
+
