@@ -55,13 +55,14 @@ class NoteTest extends TestCase
     {
 
         Auth::setUser($this->makeUser());
-        $note = Note::factory()->make();
+        $newNote = Note::factory()->make();
+        $existing = Note::first();
 
         $newNote  = Note::factory()->make();
-        $response = $this->putJSON(self::ENDPOINT.'/'.$note->id, $newNote->getAttributes());
+        $response = $this->putJSON(self::ENDPOINT.'/'.$existing->id, $newNote->getAttributes());
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas($note->getTable(), $newNote->getAttributes());
+        $this->assertDatabaseHas($newNote->getTable(), $newNote->getAttributes());
     }
 
     public function test_delete_note()
