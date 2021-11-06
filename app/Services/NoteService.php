@@ -16,7 +16,11 @@ class NoteService
 
     public function getNote(int $id): ?Model
     {
-        return $this->noteRepository->find($id);
+        if ($note = $this->noteRepository->find($id)) {
+            return $note;
+        }
+
+        throw new NotFoundHttpException('Note not found');
     }
 
     public function getUserNotes(int $userId): Collection
