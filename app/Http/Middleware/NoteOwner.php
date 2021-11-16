@@ -25,6 +25,10 @@ class NoteOwner
      */
     public function handle(Request $request, Closure $next)
     {
+        /** If the extra database call is a performance concern, this can be process in the NoteService 
+        *   and throw access errors at that point. I like to use this middleware approach as a starting
+        *   point because it is so easy to add onto routes.
+        */
         if ($this->noteService->isUserOwner($request->route('id'), Auth::user()->getAuthIdentifier())) {
             return $next($request);
         }
